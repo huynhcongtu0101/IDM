@@ -2,7 +2,7 @@
 @echo off
 
 :: Add custom name in IDM license info, prefer to write it in English and/or numeric in below line after = sign,
-set name=
+set name=%USERNAME%
 
 
 
@@ -203,7 +203,7 @@ echo:          [5] Homepage
 echo:          [6] Exit                                        
 echo:       ___________________________________________________
 echo:   
-call :_color2 %_White% "        " %_Green% "Enter a menu option in the Keyboard [1,2,3,4,5,6]"
+call :_color2 %_White% "        " %_Green% "Nhấn phím tương ứng từ bàn phím [1,2,3,4,5,6]"
 choice /C:123456 /N
 set _erl=%errorlevel%
 
@@ -271,9 +271,9 @@ echo:
 echo %line%
 echo:
 if not defined _error (
-call :_color %Green% "IDM Activation - Trial is successfully reset in the registry."
+call :_color %Green% "Kích hoạt IDM - Gia hạn dùng thử đã thành công."
 ) else (
-call :_color %Red% "Failed to completely reset IDM Activation - Trial."
+call :_color %Red% "Đã có lỗi khi gia hạn dùng thử."
 )
 
 goto done
@@ -292,7 +292,7 @@ set _error=
 
 if not exist "!IDMan!" (
 call :_color %Red% "IDM [Internet Download Manager] is not Installed."
-echo You can download it from  https://www.internetdownloadmanager.com/download.html
+echo Bạn có thể tải xuống từ https://www.internetdownloadmanager.com/download.html
 goto done
 )
 
@@ -307,7 +307,7 @@ call :_color %Red% "Unable to connect internetdownloadmanager.com, aborting..."
 goto done
 )
 
-echo Internet is connected.
+echo Đã kết nối Internet.
 
 %idmcheck% && taskkill /f /im idman.exe
 
@@ -324,7 +324,7 @@ if defined _derror call :f_reset & goto done
 
 set lockedkeys=
 set "_action=call :lock_key"
-echo Locking registry keys...
+echo Đang khóa registry...
 echo:
 call :action
 
@@ -332,9 +332,9 @@ if not defined _error if [%lockedkeys%] GEQ [7] (
 echo:
 echo %line%
 echo:
-call :_color %Green% "IDM is successfully activated."
+call :_color %Green% "Kích hoạt đã hoàn tất."
 echo:
-call :_color %Gray% "If fake serial screen appears, run activation option again, after that it wont appear."
+call :_color %Gray% "Nếu IDM báo lỗi đăng ký giả, hãy chạy lại một lần nữa."
 goto done
 )
 
@@ -352,7 +352,7 @@ timeout /t 3
 exit /b
 )
 
-call :_color %_Yellow% "Press any key to return..."
+call :_color %_Yellow% "Nhấn phím bất kỳ để trở lại..."
 pause >nul
 goto MainMenu
 
@@ -363,7 +363,7 @@ timeout /t 3
 exit /b
 )
 
-echo Press any key to exit...
+echo Nhấn phím bất kỳ để thoát...
 pause >nul
 exit /b
 
@@ -379,7 +379,7 @@ echo:
 echo:
 timeout /t 3
 
-start https://github.com/lstprjct/IDM-Activation-Script
+start https://github.com/huynhcongtu0101/IDM
 goto MainMenu
 
 ::========================================================================================================================================
@@ -389,13 +389,13 @@ goto MainMenu
 echo:
 echo %line%
 echo:
-call :_color %Red% "Error found, resetting IDM activation..."
+call :_color %Red% "Có lỗi, đang reset kích hoạt IDM..."
 set "_action=call :delete_key"
 call :reset
 echo:
 echo %line%
 echo:
-call :_color %Red% "Failed to activate IDM."
+call :_color %Red% "Lỗi khi kích hoạt IDM."
 exit /b
 
 ::========================================================================================================================================
@@ -420,21 +420,21 @@ exit /b
 :register_IDM
 
 echo:
-set /p name="What is the name to be registered?"
+set /p name="Bạn muốn kích hoạt bằng tên gì?"
 
 echo:
-echo Applying registration details...
+echo Thiết lập các thông tin kích hoạt...
 echo:
 
-If not defined name set name=Piash
+If not defined name set name=%USERNAME%
 
 set "reg=HKCU\SOFTWARE\DownloadManager /v FName /t REG_SZ /d "%name%"" & call :_rcont
 set "reg=HKCU\SOFTWARE\DownloadManager /v LName /t REG_SZ /d """ & call :_rcont
 set "reg=HKCU\SOFTWARE\DownloadManager /v Email /t REG_SZ /d "info@tonec.com"" & call :_rcont
 set "reg=HKCU\SOFTWARE\DownloadManager /v Serial /t REG_SZ /d "FOX6H-3KWH4-7TSIN-Q4US7"" & call :_rcont
-
+set "reg=HKCU\SOFTWARE\DownloadManager /v LstCheck /t REG_SZ /d "12/31/99"" & call :_rcont
 echo:
-echo Triggering a few downloads to create certain registry keys, please wait...
+echo Đang kích hoạt một vài lượt tải xuống để tạo một số khóa đăng ký nhất định, vui lòng đợi...
 
 set "file=%_temp%\temp.png"
 set _fileexist=
