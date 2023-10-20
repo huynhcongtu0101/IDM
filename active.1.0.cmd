@@ -151,9 +151,9 @@ if defined activate goto _activate
 )
 
 :MainMenu
-chcp 65001
+
 cls
-title  IDM Activation Script
+title  IAS 0.7  ^(Fork of @Dukun Cabul's Tool^)
 mode 65, 25
 
 :: Check firewall status
@@ -180,17 +180,13 @@ if not %_ena%==3 if not %_dis%==3 (
 set _status=Status_Unclear
 set _col=%_Yellow%
 )
-		
 
-echo:           ─▀▀▌───────▐▀▀
-echo:           ─▄▀░◌░░░░░░░▀▄        ◇────────────────────◇
-echo:           ▐░░◌░▄▀██▄█░░░▌        IDM Activation Script
-echo:           ▐░░░▀████▀▄░░░▌       ◇────────────────────◇
-echo:           ═▀▄▄▄▄▄▄▄▄▄▄▄▀═
 echo:
-call :_color2 %_White% "        " %_Green% "  Create By Piash"           
-echo:          _____________________________________________  
-echo:          
+echo:
+echo:
+echo:
+echo:       ___________________________________________________ 
+echo:                                                          
 echo:          [1] Activate IDM                                
 echo:          [2] Reset IDM Activation / Trial in Registry
 echo:          _____________________________________________   
@@ -207,8 +203,9 @@ call :_color2 %_White% "        " %_Green% "Enter a menu option in the Keyboard 
 choice /C:123456 /N
 set _erl=%errorlevel%
 
-if %_erl%==5 exit /b
-if %_erl%==4 goto homepage
+if %_erl%==6 exit /b
+if %_erl%==5 goto homepage
+if %_erl%==4 call :readme&goto MainMenu
 if %_erl%==3 call :_tog_Firewall&goto MainMenu
 if %_erl%==2 goto _reset
 if %_erl%==1 goto _activate
@@ -374,12 +371,12 @@ exit /b
 cls
 echo:
 echo:
-echo Going Home...
+echo Login is required.
 echo:
 echo:
 timeout /t 3
 
-start https://github.com/lstprjct/IDM-Activation-Script
+start https://www.nsaneforums.com/topic/371047--/?do=findComment^&comment=1578647
 goto MainMenu
 
 ::========================================================================================================================================
@@ -420,18 +417,16 @@ exit /b
 :register_IDM
 
 echo:
-set /p name="What is the name to be registered?"
-
-echo:
 echo Applying registration details...
 echo:
 
-If not defined name set name=Piash
+If not defined name set name=%USERNAME%
 
 set "reg=HKCU\SOFTWARE\DownloadManager /v FName /t REG_SZ /d "%name%"" & call :_rcont
 set "reg=HKCU\SOFTWARE\DownloadManager /v LName /t REG_SZ /d """ & call :_rcont
 set "reg=HKCU\SOFTWARE\DownloadManager /v Email /t REG_SZ /d "info@tonec.com"" & call :_rcont
 set "reg=HKCU\SOFTWARE\DownloadManager /v Serial /t REG_SZ /d "FOX6H-3KWH4-7TSIN-Q4US7"" & call :_rcont
+set "reg=HKCU\SOFTWARE\DownloadManager /v LstCheck /t REG_SZ /d "12/31/99"" & call :_rcont
 
 echo:
 echo Triggering a few downloads to create certain registry keys, please wait...
@@ -507,6 +502,7 @@ for %%# in (
 ""HKCU\Software\DownloadManager" "/v" "FName""
 ""HKCU\Software\DownloadManager" "/v" "LName""
 ""HKCU\Software\DownloadManager" "/v" "Email""
+""HKCU\Software\DownloadManager" "/v" "Serial""
 ""HKCU\Software\DownloadManager" "/v" "Serial""
 ""HKCU\Software\DownloadManager" "/v" "scansk""
 ""HKCU\Software\DownloadManager" "/v" "tvfrdt""
@@ -781,13 +777,13 @@ _________________________________
    Activation:
 _________________________________
 
- - This script applies the registry lock method to activate the Internet Download Manager (IDM).
+ - This script applies registry lock method to activate Internet download manager (IDM).
 
  - This method requires Internet at the time of activation.
 
  - IDM updates can be installed directly without having to activate again.
 
- - After the activation, if in some cases, the IDM starts to show an activation nag screen, 
+ - After the activation, if in some case, the IDM starts to show activation nag screen, 
    then just run the activation option again.
 
 _________________________________
@@ -795,10 +791,10 @@ _________________________________
    Reset IDM Activation / Trial:
 _________________________________
 
- - The Internet Download Manager provides 30 days trial period, you can use this script to 
+ - Internet download manager provides 30 days trial period, you can use this script to 
    reset this Activation / Trial period whenever you want.
  
- - This option also can be used to restore status if in case the IDM reports a fake serial
+ - This option also can be used to restore status if in case the IDM reports fake serial
    key and other similar errors.
 
 _________________________________
@@ -813,10 +809,11 @@ _________________________________
  - Advanced Info:
 _________________________________
 
-   - To add a custom name in IDM license info, edit line number 5 in the script file.
+   - To add a custom name in IDM license info, edit the line number 5 in the script file.
+
    - For activation in unattended mode, run the script with /act parameter.
    - For reset in unattended mode, run the script with /res parameter.
-   - To enable silent mode with the above two methods, run the script with /s parameter.
+   - To enable silent mode with above two methods, run the script with /s parameter.
 
 Possible accepted values,
 
@@ -832,58 +829,53 @@ _________________________________
 
    - If any other activator was used to activate IDM previously then make sure to properly
      uninstall it with that same activator (if there is an option), this is especially important
-     if any registry/firewall block method was used.
+     if any registry / firewall block method was used.
 
-   - Uninstall the IDM from the control panel.
+   - Uninstall the IDM from control panel.
 
    - Make sure the latest original IDM setup is used for the installation,
      you can download it from https://www.internetdownloadmanager.com/download.html
 
-   - Now install the IDM and use the activate option in this script if failed then,
+   - Now install the IDM and use the activate option in this script and if failed then,
 
-     - Disable the windows firewall with the script option, this helps in case of leftover entries of
+     - Disable windows firewall with the script option, this help in case of leftover entries of
        previously used activator (some file patch method also creates firewall entries).
 
      - Some security programs may block this script, this is false-positive, as long as you 
-       downloaded the file from the original post (mentioned below on this page), temporary suspend
-       Antivirus real-time protection, or exclude the downloaded file/extracted folder from scanning.
+       downloaded the file from original post (mentioned below in this page), temporary suspend
+       Antivirus realtime protection, or exclude the downloaded file/extracted folder from scanning.
 
-     - If you are still facing any issues, please contact me (mentioned below on this page).
+     - If you are still facing any issues, please contact me (mentioned below in this page).
 
-__________________________________________________________________________________________________
+____________________________________________________________________________________________________
 
    Credits:
-__________________________________________________________________________________________________
+____________________________________________________________________________________________________
 
-   @Dukun Cabul		- Original researcher of this IDM trial reset and activation logic,
-			  made an Autoit tool for these methods, IDM-AIO_2020_Final
-			  nsaneforums.com/topic/371047--/?do=findComment&comment=1632062
+   @Dukun Cabul        - Original researcher of this IDM trial reset and activation logic,
+                         made an Autoit tool for these methods, IDM-AIO_2020_Final
+                         nsaneforums.com/topic/371047--/?do=findComment&comment=1632062
                          
-   @WindowsAddict	- Ported the above Autoit tool to a batch script
+   @WindowsAddict (Me) - Ported the above Autoit tool to batch script
 
-   @AveYo aka @BAU	- Snippet to set registry ownership and permission recursively
-			  pastebin.com/XTPt0JSC
+   @AveYo aka @BAU     - Snippet to set registry ownership and permission recursively
+                         pastebin.com/XTPt0JSC
 
-   @abbodi1406		- Awesome batch script tricks and help
+   @abbodi1406         - Awesome batch script tricks and help
 
-   @dbenham		- Set buffer height independently of window height
-			  stackoverflow.com/a/13351373
+   @dbenham            - Set buffer height independently of window height
+                         stackoverflow.com/a/13351373
 
-   @ModByPiash (Me)	- Add and fix some missing features.
-
-   @vavavr00m  		- Changed set name to prompt for a name
-
-   @LazyDevv		- Added a cute goldfish art in the main menu.
-   
 _________________________________
 
    IDM Activation Script
    
-   Homepage:	https://github.com/lstprjct/IDM-Activation-Script
+   Homepage: nsaneforums.com/topic/371047--/?do=findComment&comment=1578647
+             login required
    
-   Telegram:	https://t.me/ModByPiash
+   Email:    windowsaddict@protonmail.com
 
-__________________________________________________________________________________________________
+____________________________________________________________________________________________________
 :txt:
 
 ::========================================================================================================================================
