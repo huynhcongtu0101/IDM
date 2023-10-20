@@ -180,28 +180,30 @@ if not %_ena%==3 if not %_dis%==3 (
 set _status=Status_Unclear
 set _col=%_Yellow%
 )
+		
 
-echo:          ◇───────────────────────────────◇
-echo:          ◇      KÍCH HOẠT IDM TỰ ĐỘNG    ◇
-echo:          ◇───────────────────────────────◇
-call :_color2 %_White% "        " %_Green% "  By Huynh Công Tử"           
-echo:          _____________________________________________  
+echo:           ─▀▀▌───────▐▀▀
+echo:           ─▄▀░◌░░░░░░░▀▄        ◇────────────────────◇
+echo:           ▐░░◌░▄▀██▄█░░░▌        IDM Activation Script
+echo:           ▐░░░▀████▀▄░░░▌       ◇────────────────────◇
+echo:           ═▀▄▄▄▄▄▄▄▄▄▄▄▀═
 echo:
-echo:          Nhấn từ bàn phím:
+call :_color2 %_White% "        " %_Green% "  Create By Piash"           
+echo:          _____________________________________________  
 echo:          
-echo:         [1] Để Kích hoạt IDM tự động                                
-echo:         [2] Kích hoạt lại IDM / Reset dùng thử IDM
+echo:          [1] Activate IDM                                
+echo:          [2] Reset IDM Activation / Trial in Registry
 echo:          _____________________________________________   
 echo:                                                          
-call :_color2 %_White% "          [3] Bật tường lửa  " %_col% "[%_status%]"
+call :_color2 %_White% "          [3] Toggle Windows Firewall  " %_col% "[%_status%]"
 echo:          _____________________________________________   
 echo:                                                          
-echo:          [4] Chi tiết                                      
-echo:          [5] Trang chủ                                    
-echo:          [6] Thoát                                        
+echo:          [4] ReadMe                                      
+echo:          [5] Homepage                                    
+echo:          [6] Exit                                        
 echo:       ___________________________________________________
 echo:   
-call :_color2 %_White% "        " %_Green% "Nhập từ bàn phím các ký tự tương ứng [1,2,3,4,5,6]"
+call :_color2 %_White% "        " %_Green% "Enter a menu option in the Keyboard [1,2,3,4,5,6]"
 choice /C:123456 /N
 set _erl=%errorlevel%
 
