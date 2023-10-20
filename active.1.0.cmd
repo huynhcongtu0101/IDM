@@ -55,15 +55,15 @@ if defined Silent call :begin %nul% & exit /b
 
 if not exist "%_psc%" (
 %nceline%
-echo Powershell Không được cài đặt trên hệ thống.
+echo Powershell Khong Duoc cai Dat tren he thong.
 echo Aborting...
 goto done2
 )
 
 if %winbuild% LSS 7600 (
 %nceline%
-echo Không hỗ trợ trên hệ thống của bạn.
-echo Dự án này chỉ hỗ trợ trên Windows 7/8/8.1/10/11.
+echo Khong ho tro tren he thong cua ban.
+echo Du an nay chi ho tro tren Windows 7/8/8.1/10/11.
 goto done2
 )
 set "_work=%~dp0"
@@ -82,7 +82,7 @@ setlocal EnableDelayedExpansion
 %nul% reg query HKU\S-1-5-19 || (
 if not defined _elev %nul% %_psc% "start cmd.exe -arg '/c \"!_PSarg:'=''!\"' -verb runas" && exit /b
 %nceline%
-echo Bạn cần chạy bằng quyền Administrator.
+echo Ban can chay bang quyen Administrator.
 goto done2
 )
 
@@ -117,7 +117,7 @@ if defined activate goto _activate
 :MainMenu
 
 cls
-title  IAS 0.7  ^(Fork of @Dukun Cabul's Tool^)
+title  Kich Hoat IDM Boi Huynh Cong Tu
 mode 65, 25
 
 :: Check firewall status
@@ -131,12 +131,12 @@ if /i %%b equ 0x1 (set /a _ena+=1) else (set /a _dis+=1)
 )
 
 if %_ena%==3 (
-set _status=Enabled
+set _status=Bat
 set _col=%_Green%
 )
 
 if %_dis%==3 (
-set _status=Disabled
+set _status=Tat
 set _col=%_Red%
 )
 
@@ -151,11 +151,11 @@ echo:
 echo:
 echo:       ___________________________________________________ 
 echo:                                                          
-echo:          [1] Kích hoạt IDM                                
-echo:          [2] Gia hạn dùng thử
+echo:          [1] Kich hoat IDM                                
+echo:          [2] Gia han dung thu IDM
 echo:          _____________________________________________   
 echo:                                                          
-call :_color2 %_White% "          [3] Tường lửa Windows  " %_col% "[%_status%]"
+call :_color2 %_White% "          [3] Tuong lua Windows  " %_col% "[%_status%]"
 echo:          _____________________________________________   
 echo:                                                          
 echo:          [4] ReadMe                                      
@@ -163,7 +163,7 @@ echo:          [5] Homepage
 echo:          [6] Exit                                        
 echo:       ___________________________________________________
 echo:   
-call :_color2 %_White% "        " %_Green% "Enter a menu option in the Keyboard [1,2,3,4,5,6]"
+call :_color2 %_White% "        " %_Green% "Nhap tuy chon tu ban phim [1,2,3,4,5,6]"
 choice /C:123456 /N
 set _erl=%errorlevel%
 
@@ -232,9 +232,9 @@ echo:
 echo %line%
 echo:
 if not defined _error (
-call :_color %Green% "Đã gia hạn thành công."
+call :_color %Green% "Đa gia han thanh cong."
 ) else (
-call :_color %Red% "Gia hạn thất bại."
+call :_color %Red% "Gia han that bai."
 )
 
 goto done
@@ -252,8 +252,8 @@ echo:
 set _error=
 
 if not exist "!IDMan!" (
-call :_color %Red% "IDM [Internet Download Manager] không được cài đặt."
-echo tải IDM chính chủ twf  https://www.internetdownloadmanager.com/download.html
+call :_color %Red% "IDM [Internet Download Manager] khong đuoc cai dat."
+echo tai IDM chinh chu tu  https://www.internetdownloadmanager.com/download.html
 goto done
 )
 
@@ -264,11 +264,11 @@ ping -n 1 internetdownloadmanager.com >nul || (
 )
 
 if not [%errorlevel%]==[0] (
-call :_color %Red% "Không thể kết nối tới www.internetdownloadmanager.com ..."
+call :_color %Red% "Khong the ket noi toi www.internetdownloadmanager.com ..."
 goto done
 )
 
-echo Đã kết nối Internet.
+echo Da ket noi Internet.
 
 %idmcheck% && taskkill /f /im idman.exe
 
@@ -293,9 +293,9 @@ if not defined _error if [%lockedkeys%] GEQ [7] (
 echo:
 echo %line%
 echo:
-call :_color %Green% "Kích hoạt thành công."
+call :_color %Green% "Kich hoat thanh cong."
 echo:
-call :_color %Gray% "Nếu bị thông báo Key Giả mạo, hãy chạy lại chương trình này."
+call :_color %Gray% "Neu bi thong bao Key Gia mao, hay chay lai chuong trinh nay."
 goto done
 )
 
@@ -313,7 +313,7 @@ timeout /t 3
 exit /b
 )
 
-call :_color %_Yellow% "Nhấn phím bất kỳ..."
+call :_color %_Yellow% "Nhan phim bat ky..."
 pause >nul
 goto MainMenu
 
@@ -324,7 +324,7 @@ timeout /t 3
 exit /b
 )
 
-echo Nhấn phím bất kỳ để thoát...
+echo Nhan phim bat ky de thoat...
 pause >nul
 exit /b
 
@@ -335,7 +335,7 @@ exit /b
 cls
 echo:
 echo:
-echo Đăng nhập là cần thiết.
+echo Đang nhap la can thiet.
 echo:
 echo:
 timeout /t 3
