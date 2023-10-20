@@ -1,26 +1,12 @@
 @setlocal DisableDelayedExpansion
 @echo off
-
-:: Add custom name in IDM license info, prefer to write it in English and/or numeric in below line after = sign,
 set name=
-
-
-
-
-::========================================================================================================================================
-
-:: Re-launch the script with x64 process if it was initiated by x86 process on x64 bit Windows
-:: or with ARM64 process if it was initiated by x86/ARM32 process on ARM64 Windows
-
 if exist %SystemRoot%\Sysnative\cmd.exe (
 set "_cmdf=%~f0"
 setlocal EnableDelayedExpansion
 start %SystemRoot%\Sysnative\cmd.exe /c ""!_cmdf!" %*"
 exit /b
 )
-
-:: Re-launch the script with ARM32 process if it was initiated by x64 process on ARM64 Windows
-
 if exist %SystemRoot%\Windows\SyChpe32\kernel32.dll if exist %SystemRoot%\SysArm32\cmd.exe if %PROCESSOR_ARCHITECTURE%==AMD64 (
 set "_cmdf=%~f0"
 setlocal EnableDelayedExpansion
@@ -28,12 +14,8 @@ start %SystemRoot%\SysArm32\cmd.exe /c ""!_cmdf!" %*"
 exit /b
 )
 
-::  Set Path variable, it helps if it is misconfigured in the system
-
 set "SysPath=%SystemRoot%\System32"
 set "Path=%SysPath%;%SystemRoot%;%SysPath%\Wbem;%SysPath%\WindowsPowerShell\v1.0\"
-
-::========================================================================================================================================
 
 cls
 color 07
@@ -71,27 +53,19 @@ if defined Silent call :begin %nul% & exit /b
 
 :begin
 
-::========================================================================================================================================
-
 if not exist "%_psc%" (
 %nceline%
-echo Powershell is not installed in the system.
+echo Powershell Không được cài đặt trên hệ thống.
 echo Aborting...
 goto done2
 )
 
 if %winbuild% LSS 7600 (
 %nceline%
-echo Unsupported OS version Detected.
-echo Project is supported only for Windows 7/8/8.1/10/11 and their Server equivalent.
+echo Không hỗ trợ trên hệ thống của bạn.
+echo Dự án này chỉ hỗ trợ trên Windows 7/8/8.1/10/11.
 goto done2
 )
-
-::========================================================================================================================================
-
-::  Fix for the special characters limitation in path name
-::  Thanks to @abbodi1406
-
 set "_work=%~dp0"
 if "%_work:~-1%"=="\" set "_work=%_work:~0,-1%"
 
@@ -105,22 +79,12 @@ for /f "tokens=2*" %%a in ('reg query "HKCU\Software\DownloadManager" /v ExePath
 
 setlocal EnableDelayedExpansion
 
-::========================================================================================================================================
-
-::  Elevate script as admin and pass arguments and preventing loop
-::  Thanks to @abbodi1406 for the powershell method and solving special characters issue in file path name.
-
 %nul% reg query HKU\S-1-5-19 || (
 if not defined _elev %nul% %_psc% "start cmd.exe -arg '/c \"!_PSarg:'=''!\"' -verb runas" && exit /b
 %nceline%
-echo This script require administrator privileges.
-echo To do so, right click on this script and select 'Run as administrator'.
+echo Bạn cần chạy bằng quyền Administrator.
 goto done2
 )
-
-::========================================================================================================================================
-
-:: Below code also works for ARM64 Windows 10 (including x64 bit emulation)
 
 reg query "HKLM\Hardware\Description\System\CentralProcessor\0" /v "Identifier" | find /i "x86" 1>nul && set arch=x86|| set arch=x64
 
@@ -187,11 +151,11 @@ echo:
 echo:
 echo:       ___________________________________________________ 
 echo:                                                          
-echo:          [1] Activate IDM                                
-echo:          [2] Reset IDM Activation / Trial in Registry
+echo:          [1] Kích hoạt IDM                                
+echo:          [2] Gia hạn dùng thử
 echo:          _____________________________________________   
 echo:                                                          
-call :_color2 %_White% "          [3] Toggle Windows Firewall  " %_col% "[%_status%]"
+call :_color2 %_White% "          [3] Tường lửa Windows  " %_col% "[%_status%]"
 echo:          _____________________________________________   
 echo:                                                          
 echo:          [4] ReadMe                                      
@@ -268,9 +232,9 @@ echo:
 echo %line%
 echo:
 if not defined _error (
-call :_color %Green% "IDM Activation - Trial is successfully reset in the registry."
+call :_color %Green% "Đã gia hạn thành công."
 ) else (
-call :_color %Red% "Failed to completely reset IDM Activation - Trial."
+call :_color %Red% "Gia hạn thất bại."
 )
 
 goto done
@@ -288,8 +252,8 @@ echo:
 set _error=
 
 if not exist "!IDMan!" (
-call :_color %Red% "IDM [Internet Download Manager] is not Installed."
-echo You can download it from  https://www.internetdownloadmanager.com/download.html
+call :_color %Red% "IDM [Internet Download Manager] không được cài đặt."
+echo tải IDM chính chủ twf  https://www.internetdownloadmanager.com/download.html
 goto done
 )
 
@@ -300,11 +264,11 @@ ping -n 1 internetdownloadmanager.com >nul || (
 )
 
 if not [%errorlevel%]==[0] (
-call :_color %Red% "Unable to connect internetdownloadmanager.com, aborting..."
+call :_color %Red% "Không thể kết nối tới www.internetdownloadmanager.com ..."
 goto done
 )
 
-echo Internet is connected.
+echo Đã kết nối Internet.
 
 %idmcheck% && taskkill /f /im idman.exe
 
@@ -329,9 +293,9 @@ if not defined _error if [%lockedkeys%] GEQ [7] (
 echo:
 echo %line%
 echo:
-call :_color %Green% "IDM is successfully activated."
+call :_color %Green% "Kích hoạt thành công."
 echo:
-call :_color %Gray% "If fake serial screen appears, run activation option again, after that it wont appear."
+call :_color %Gray% "Nếu bị thông báo Key Giả mạo, hãy chạy lại chương trình này."
 goto done
 )
 
@@ -349,7 +313,7 @@ timeout /t 3
 exit /b
 )
 
-call :_color %_Yellow% "Press any key to return..."
+call :_color %_Yellow% "Nhấn phím bất kỳ..."
 pause >nul
 goto MainMenu
 
@@ -360,7 +324,7 @@ timeout /t 3
 exit /b
 )
 
-echo Press any key to exit...
+echo Nhấn phím bất kỳ để thoát...
 pause >nul
 exit /b
 
@@ -371,7 +335,7 @@ exit /b
 cls
 echo:
 echo:
-echo Login is required.
+echo Đăng nhập là cần thiết.
 echo:
 echo:
 timeout /t 3
